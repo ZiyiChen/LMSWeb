@@ -17,8 +17,7 @@ import com.jdbc.lmdo.Book;
 public class GenreDAO extends BaseDAO{
 	public void insert(Genre genre) throws SQLException {
 		int genreId = saveWithId("insert into tbl_genre (genre_name) values (?)",
-				new Object[] { genre.getGenreName() },
-				"genre_id");
+				new Object[] { genre.getGenreName() });
 		genre.setGenreId(genreId);
 	}
 

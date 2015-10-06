@@ -16,8 +16,7 @@ import com.jdbc.lmdo.Branch;
 public class BranchDAO extends BaseDAO{
 	public void insert(Branch bh) throws SQLException {
 		int branchId = saveWithId("insert into tbl_library_branch (branchName, branchAddress) values (?, ?)",
-				new Object[]{bh.getName(), bh.getAddress()},
-				"branchId");
+				new Object[]{bh.getName(), bh.getAddress()});
 		bh.setBranchId(branchId);
 	}
 	

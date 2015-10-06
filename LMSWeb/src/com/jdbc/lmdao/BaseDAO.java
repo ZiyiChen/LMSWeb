@@ -17,6 +17,13 @@ public abstract class BaseDAO {
 	protected abstract Object convertResult(ResultSet rs) throws SQLException;
 	
 	protected Connection getConnection() throws SQLException {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		Connection conn = DriverManager.getConnection(
 				"jdbc:mysql://localhost:3306/library", 
 				"root", "password");
@@ -40,7 +47,7 @@ public abstract class BaseDAO {
 //			return -1;
 //	}
 	
-	protected int saveWithId(String query, Object[] values, String key) throws SQLException {
+	protected int saveWithId(String query, Object[] values) throws SQLException {
 		PreparedStatement stmt = getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		
 		int count = 1;
@@ -51,8 +58,8 @@ public abstract class BaseDAO {
 		
 		stmt.executeUpdate();
 		ResultSet rs = stmt.getGeneratedKeys();
-		if(key != null && rs.next())
-			return rs.getInt(key);
+		if(rs.next())
+			return rs.getInt(1);
 		else 
 			return -1;
 	}

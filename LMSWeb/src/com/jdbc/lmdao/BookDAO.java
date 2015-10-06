@@ -21,8 +21,7 @@ public class BookDAO extends BaseDAO{
 		int bookId = saveWithId(
 				"insert into tbl_book (title, pubId) values (?,?)",
 				new Object[] { book.getTitle(),
-						book.getPublisher().getPublisherId()},
-				"bookId");
+						book.getPublisher().getPublisherId()});
 		for (Author auth : book.getAuthors()) {
 			save("insert into tbl_book_authors (bookId, authorId) values (?,?)",
 					new Object[] { bookId, auth.getAuthorId() });

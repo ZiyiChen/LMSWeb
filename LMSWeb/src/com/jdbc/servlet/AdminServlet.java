@@ -37,10 +37,9 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("HERE1");
 		try {
 			String action = request.getParameter("action");
-			System.out.println("HERE: "+ action);
+			//System.out.println("HERE: "+ action);
 			if (action.equals("addAuthor")) {
 				String authorName = request.getParameter("authorName");
 				Author author = new Author();

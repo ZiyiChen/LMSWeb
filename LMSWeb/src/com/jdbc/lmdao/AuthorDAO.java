@@ -17,8 +17,7 @@ import com.jdbc.lmdo.Book;
 public class AuthorDAO extends BaseDAO {
 	public void insert(Author auth) throws SQLException {
 		int id = saveWithId("insert into tbl_author (authorName) values (?)",
-				new Object[] {auth.getAuthorName()},
-				"authorId");
+				new Object[] {auth.getAuthorName()});
 		auth.setAuthorId(id);
 	}
 

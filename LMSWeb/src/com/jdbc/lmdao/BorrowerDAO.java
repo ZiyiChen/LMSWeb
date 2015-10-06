@@ -17,8 +17,7 @@ import com.jdbc.lmdo.Book;
 public class BorrowerDAO extends BaseDAO{
 	public void insert(Borrower borr) throws SQLException {
 		int id = saveWithId("insert into tbl_borrower (name, address, phone) values (?)",
-				new Object[] {borr.getName(), borr.getAddress(), borr.getPhone()},
-				"cardNo");
+				new Object[] {borr.getName(), borr.getAddress(), borr.getPhone()});
 		borr.setCardNo(id);
 	}
 
