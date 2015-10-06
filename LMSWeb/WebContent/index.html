@@ -28,49 +28,50 @@
 		</h4>
 		<div id="author" style="display: none;">
 			<h5>
-				&emsp;&emsp;&emsp;&emsp;<a >List Authors</a>
+				&emsp;&emsp;&emsp;&emsp;<a href="AdminServlet?action=listAuthors">List
+					Authors</a>
 			</h5>
 			<h5>
 				&emsp;&emsp;&emsp;&emsp;<a href="javascript:openMenu('addAuthor');">Add
 					Author</a>
 			</h5>
 			<div id="addAuthor" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Add Author</h4>
-					Author Name:
-					<input type="text" name="authorName" /> <input
-						type="submit" />
-					<input type="hidden" name="action" value="addAuthor">
+					Author Name: <input type="text" name="authorName" /> <input
+						type="submit" /> <input type="hidden" name="action"
+						value="addAuthor" />
 				</form>
 			</div>
 
 			<h5>
-				&emsp;&emsp;&emsp;&emsp;<a href="javascript:openMenu('updateAuthor');">Update
-					Author</a>
+				&emsp;&emsp;&emsp;&emsp;<a
+					href="javascript:openMenu('updateAuthor');">Update Author</a>
 			</h5>
 			<div id="updateAuthor" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Update Author</h4>
-					Author ID: <input type="text" name="authorId" />
-					Author Name: <input type="text" name="authorName" /> 
-					<input type="submit" />
+					Author ID: <input type="text" name="authorId" /> Author Name: <input
+						type="text" name="authorName" /> <input type="hidden"
+						name="action" value="updateAuthor" /> <input type="submit" />
 				</form>
 			</div>
-			
+
 			<h5>
-				&emsp;&emsp;&emsp;&emsp;<a href="javascript:openMenu('deleteAuthor');">Delete
-					Author</a>
+				&emsp;&emsp;&emsp;&emsp;<a
+					href="javascript:openMenu('deleteAuthor');">Delete Author</a>
 			</h5>
 			<div id="deleteAuthor" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Delete Author</h4>
 					Author ID: <input type="text" name="authorId" /> <input
-						type="submit" />
+						type="submit" /> <input type="hidden" name="action"
+						value="deleteAuthor" />
 				</form>
 			</div>
 
 		</div>
-		
+
 		<h4>
 			&emsp;&emsp;<a href="javascript:openMenu('book');">Book</a>
 		</h4>
@@ -83,13 +84,12 @@
 					Book</a>
 			</h5>
 			<div id="addBook" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Add Book</h4>
-					Book Title: <input type="text" name="bookTitle" /> 
-					Book Publisher ID: <input type="text" name="bookPubId" />
-					Book Author IDs: <input type="text" name="bookAuthIds" />
-					Book Genre IDs: <input type="text" name="bookGenreIds" />
-					<input type="submit" />
+					Book Title: <input type="text" name="bookTitle" /> Book Publisher
+					ID: <input type="text" name="bookPubId" /> Book Author IDs: <input
+						type="text" name="bookAuthIds" /> Book Genre IDs: <input
+						type="text" name="bookGenreIds" /> <input type="submit" />
 				</form>
 			</div>
 
@@ -98,26 +98,24 @@
 					Book</a>
 			</h5>
 			<div id="updateBook" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Update Book</h4>
-					Book ID: <input type="text" name="bookId" />
-					Book Title: <input type="text" name="bookTitle" /> 
-					Book Publisher ID: <input type="text" name="bookPubId" />
-					Book Author IDs: <input type="text" name="bookAuthIds" />
-					Book Genre IDs: <input type="text" name="bookGenreIds" />
-					<input type="submit" />
+					Book ID: <input type="text" name="bookId" /> Book Title: <input
+						type="text" name="bookTitle" /> Book Publisher ID: <input
+						type="text" name="bookPubId" /> Book Author IDs: <input
+						type="text" name="bookAuthIds" /> Book Genre IDs: <input
+						type="text" name="bookGenreIds" /> <input type="submit" />
 				</form>
 			</div>
-			
+
 			<h5>
 				&emsp;&emsp;&emsp;&emsp;<a href="javascript:openMenu('deleteBook');">Delete
 					Book</a>
 			</h5>
 			<div id="deleteBook" style="display: none;">
-				<form action="adminServlet" method="post">
+				<form action="AdminServlet" method="post">
 					<h4>Delete Book</h4>
-					Book ID: <input type="text" name="bookId" /> <input
-						type="submit" />
+					Book ID: <input type="text" name="bookId" /> <input type="submit" />
 				</form>
 			</div>
 
