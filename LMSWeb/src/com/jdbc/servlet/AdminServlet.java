@@ -1,9 +1,6 @@
 package com.jdbc.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,12 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jdbc.lmdo.Author;
+import com.jdbc.lmdo.Publisher;
 import com.jdbc.lmsys.AdministratorManagementSys;
 
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet("/AdminServlet")
+@WebServlet({"/listAuthors","/editAuthor","/createAuthor","/addAuthor","/deleteAuthor","/updateAuthor",
+	"/listBooks","/editBook","/createBook","/addBook","/deleteBook","/updateBook",
+	"/listPublishers","/editPublisher","/createPublisher","/addPublisher","/deletePublisher","/updatePublisher",
+	"/listBranchs","/editBranch","/createBranch","/addBranch","/deleteBranch","/updateBranch",
+	"/listBorrowers","/editBorrower","/createBorrower","/addBorower","/deleteBorower","/updateBorower",
+	"/listLoans","/editLoan","/updateLoan"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,81 +29,181 @@ public class AdminServlet extends HttpServlet {
 	 * Default constructor. 
 	 */
 	public AdminServlet() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			String action = request.getParameter("action");
-			//System.out.println("HERE: "+ action);
-			if (action.equals("listAuthors")) {
-				response.setContentType("text/html");
-
-				PrintWriter out = response.getWriter();
-				String title = "List of Author";
-				out.println("<!DOCTYPE html>" +
-						"<html>\n" +
-						"<head><title>" + title + "</title>"+
-						"<style>"+
-						"table, th, td {border: 1px solid black;}"+
-						"</style> </head>\n" +
-						"<h1 align=\"center\">" + title + "</h1>\n" +
-						"<table>"+
-						"<tr>" +
-						"<th>ID</th>" +
-						"<th>Name</th>" +
-						"</tr>");
-				AdministratorManagementSys ams = new AdministratorManagementSys();
-				List<Author> auths = ams.getAllAuthor();
-				for(Author auth : auths){
-					out.println("<tr>"+
-							"<td>"+auth.getAuthorId()+"</td>"+
-							"<td>"+auth.getAuthorName()+"</td>"+
-							"</tr>");
-
-				}
-				out.println("</table>"+
-						"</body></html>");
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
+		doPost(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			String action = request.getParameter("action");
-			//System.out.println("HERE: "+ action);
-			if (action.equals("addAuthor")) {
-				Author author = new Author();
-				author.setAuthorName(request.getParameter("authorName"));
+		
+		String function = request.getRequestURI().substring(request.getContextPath().length(), request.getRequestURI().length());
+		String message = null;
+		String error = null;
+		String view = null;
+		System.out.println("action: "+function);
+		
+		switch (function) {
+		case "/addAuthor": {
+			String authorName = request.getParameter("authorName");
+			Author author = new Author();
+			author.setAuthorName(authorName);
+
+			try {
 				new AdministratorManagementSys().insertAuthor(author);
-				RequestDispatcher view = request.getRequestDispatcher("");
-				view.forward(request, response);
+				error = null;
+				message = "Author add succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Author add failed. Reason: " + e.getMessage();
 			}
-			else if (action.equals("updateAuthor")) {
-				Author author = new Author();
-				author.setAuthorId(Integer.parseInt(request.getParameter("authorId")));
-				author.setAuthorName(request.getParameter("authorName"));
-				new AdministratorManagementSys().updateAuthor(author);
-				RequestDispatcher view = request.getRequestDispatcher("");
-				view.forward(request, response);
-			}else if (action.equals("deleteAuthor")) {
-				Author author = new Author();
-				author.setAuthorId(Integer.parseInt(request.getParameter("authorId")));
-				new AdministratorManagementSys().deleteAuthor(author);
-				RequestDispatcher view = request.getRequestDispatcher("");
-				view.forward(request, response);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			view = "/listAuthors.jsp";
+			break;
 		}
+		case "/updateAuthor": {
+			String authorName = request.getParameter("authorName");
+			int authorId = Integer.parseInt(request.getParameter("authorId"));
+			Author author = new Author();
+			author.setAuthorName(authorName);
+			author.setAuthorId(authorId);
+			try {
+				new AdministratorManagementSys().updateAuthor(author);
+				error = null;
+				message = "Author update succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Author update failed. Reason: " + e.getMessage();
+			}
+			view = "/listAuthors.jsp";
+			break;
+		}
+		case "/deleteAuthor": {
+			int authorId = Integer.parseInt(request.getParameter("authorId"));
+			Author author = new Author();
+			author.setAuthorId(authorId);
+			try {
+				new AdministratorManagementSys().deleteAuthor(author);
+				error = null;
+				message = "Author delete succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Author delete failed. Reason: " + e.getMessage();
+			}
+			view = "/listAuthors.jsp";
+			break;
+		}
+		case "/editAuthor": {
+			message = null;
+			error = null;
+			view = "/editAuthor.jsp";
+			break;
+		}
+		case "/listAuthors": {
+			message = null;
+			error = null;
+			view = "/listAuthors.jsp";
+			break;
+		}
+		case "/createAuthor": {
+			message = null;
+			error = null;
+			view = "/createAuthor.jsp";
+			break;
+		}
+		case "/addPublisher": {
+			String publisherName = request.getParameter("publisherName");
+			String publisherAddress = request.getParameter("publisherAddress");
+			String publisherPhone = request.getParameter("publisherPhone");
+			Publisher publisher = new Publisher();
+			publisher.setPublisherName(publisherName);
+			publisher.setAddress(publisherAddress);
+			publisher.setPhone(publisherPhone);
+			
+			try {
+				new AdministratorManagementSys().insertPublisher(publisher);
+				error = null;
+				message = "Publisher add succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Publisher add failed. Reason: " + e.getMessage();
+			}
+			view = "/listPublishers.jsp";
+			break;
+		}
+		case "/updatePublisher": {
+			String publisherName = request.getParameter("publisherName");
+			String publisherAddress = request.getParameter("publisherAddress");
+			String publisherPhone = request.getParameter("publisherPhone");
+			int publisherId = Integer.parseInt(request.getParameter("publisherId"));
+			Publisher publisher = new Publisher();
+			publisher.setPublisherName(publisherName);
+			publisher.setAddress(publisherAddress);
+			publisher.setPhone(publisherPhone);
+			publisher.setPublisherId(publisherId);
+			try {
+				new AdministratorManagementSys().updatePublisher(publisher);
+				error = null;
+				message = "Publisher update succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Publisher update failed. Reason: " + e.getMessage();
+			}
+			view = "/listPublishers.jsp";
+			break;
+		}
+		case "/deletePublisher": {
+			int publisherId = Integer.parseInt(request.getParameter("publisherId"));
+			Publisher publisher = new Publisher();
+			publisher.setPublisherId(publisherId);
+			try {
+				new AdministratorManagementSys().deletePublisher(publisher);
+				error = null;
+				message = "Publisher delete succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Publisher delete failed. Reason: " + e.getMessage();
+			}
+			view = "/listPublishers.jsp";
+			break;
+		}
+		case "/editPublisher": {
+			message = null;
+			error = null;
+			view = "/editPublisher.jsp";
+			break;
+		}
+		case "/listPublishers": {
+			message = null;
+			error = null;
+			view = "/listPublishers.jsp";
+			break;
+		}
+		case "/createPublisher": {
+			message = null;
+			error = null;
+			view = "/createPublisher.jsp";
+			break;
+		}
+		default:
+			break;
+		}
+		request.setAttribute("message", message);
+		request.setAttribute("error", error);
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(view);
+		rd.forward(request, response);
 	}
 
 }

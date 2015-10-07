@@ -15,7 +15,7 @@ import com.jdbc.lmdo.Publisher;
 
 public class PublisherDAO extends BaseDAO{
 	public void insert(Publisher pub) throws SQLException {
-		int pubId = saveWithId("insert into tbl_publisher (publisherName, publisherAddress, publisherPhone value (?, ?, ?)",
+		int pubId = saveWithId("insert into tbl_publisher (publisherName, publisherAddress, publisherPhone) values (?, ?, ?)",
 				new Object[]{pub.getPublisherName(), pub.getAddress(), pub.getPhone()});
 		pub.setPublisherId(pubId);
 	}

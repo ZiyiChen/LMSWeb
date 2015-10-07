@@ -34,6 +34,11 @@ public class AdministratorManagementSys {
 		return bkDAO.readAll();
 	}
 	
+	public Book getBookById (int id) throws SQLException {
+		BookDAO bkDAO = new BookDAO();
+		return bkDAO.readOne(id);
+	}
+	
 	public List<Author> getAllValidAuthorsByBook(Book bk) throws SQLException {
 		List<Author> res = new ArrayList<Author>();
 		AuthorDAO authDAO = new AuthorDAO(); 
@@ -81,6 +86,11 @@ public class AdministratorManagementSys {
 		return pubDAO.readAll();
 	}
 	
+	public Publisher getPublisherById (int id) throws SQLException {
+		PublisherDAO pubDAO = new PublisherDAO();
+		return pubDAO.readOne(id);
+	}
+	
 	public void updatePublisher (Publisher pub) throws SQLException {
 		PublisherDAO pubDAO = new PublisherDAO();
 		pubDAO.update(pub);
@@ -99,6 +109,11 @@ public class AdministratorManagementSys {
 	public List<Author> getAllAuthor () throws SQLException {
 		AuthorDAO authDAO = new AuthorDAO();
 		return authDAO.readAll();
+	}
+	
+	public Author getAuthorById (int id) throws SQLException {
+		AuthorDAO authDAO = new AuthorDAO();
+		return authDAO.readOne(id);
 	}
 	
 	public void updateAuthor (Author auth) throws SQLException {
