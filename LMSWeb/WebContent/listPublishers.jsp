@@ -4,7 +4,7 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<% 	List<Publisher> publishers = new AdministratorManagementSys().getAllPublisher(); 
+<% 	List<Publisher> publishers = new AdministratorManagementSys().getAllPublishers(); 
     String message = (String) request.getAttribute("message");
     String error = (String) request.getAttribute("error");
     %>
@@ -26,7 +26,7 @@
 </script>
 </head>
 <body>
-	<form name="createPublisherForm" action="createPublisher" method="post">
+	<form name="createPublisherForm" action="createPublisher.jsp" method="post">
 		<input type="submit" value="Create New Publisher"/>
 	</form>
 	
@@ -41,7 +41,7 @@
 	<form name="deletePublisherForm" action="deletePublisher" method="post">
 		<input type="hidden" id="deleId" name="publisherId" />
 	</form>
-	<form name="editPublisherForm" action="editPublisher" method="post">
+	<form name="editPublisherForm" action="editPublisher.jsp" method="post">
 		<input type="hidden" id="editId" name="publisherId" />
 	</form>
 	<table>
@@ -52,16 +52,19 @@
 			<td><b>Edit</b></td>
 			<td><b>Delete</b></td>
 		</tr>
-		<%for(Publisher publisher:publishers) {%>
-		<tr>
-			<td><%=publisher.getPublisherName()%></td>
-			<td><%=publisher.getAddress()%></td>
-			<td><%=publisher.getPhone()%></td>
-			<td><input type="button" value="Edit" onclick="javascript:editPublisher('<%=publisher.getPublisherId()%>');"/></td>
-			<td><input type="button" value="Delete"
-				onclick="javascript:deletePublisher('<%=publisher.getPublisherId()%>');" /></td>
-		</tr>
-		<% } %>
+		<%
+		if(publishers != null) {
+			for(Publisher publisher:publishers) {%>
+			<tr>
+				<td><%=publisher.getPublisherName()%></td>
+				<td><%=publisher.getAddress()%></td>
+				<td><%=publisher.getPhone()%></td>
+				<td><input type="button" value="Edit" onclick="javascript:editPublisher('<%=publisher.getPublisherId()%>');"/></td>
+				<td><input type="button" value="Delete"
+					onclick="javascript:deletePublisher('<%=publisher.getPublisherId()%>');" /></td>
+			</tr>
+		<% }
+		}%>
 
 
 	</table>

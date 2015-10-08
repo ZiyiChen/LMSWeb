@@ -34,9 +34,27 @@ public class AdministratorManagementSys {
 		return bkDAO.readAll();
 	}
 	
+	public List<Book> getAllFullLoadBooks () throws SQLException {
+		BookDAO bkDAO = new BookDAO();
+		List<Book> bks = bkDAO.readAll();
+		for (Book bk : bks) {
+			bk.setAuthors(new AuthorDAO().readAllByBook(bk));
+			bk.setGenres(new GenreDAO().readAllByBook(bk));
+		}
+		return bks;
+	}
+	
 	public Book getBookById (int id) throws SQLException {
 		BookDAO bkDAO = new BookDAO();
 		return bkDAO.readOne(id);
+	}
+	
+	public Book getFullLoadBookById (int id) throws SQLException {
+		BookDAO bkDAO = new BookDAO();
+		Book bk = bkDAO.readOne(id);
+		bk.setAuthors(new AuthorDAO().readAllByBook(bk));
+		bk.setGenres(new GenreDAO().readAllByBook(bk));
+		return bk;
 	}
 	
 	public List<Author> getAllValidAuthorsByBook(Book bk) throws SQLException {
@@ -81,7 +99,7 @@ public class AdministratorManagementSys {
 		bkDAO.insert(bk);
 	}
 	
-	public List<Publisher> getAllPublisher () throws SQLException {
+	public List<Publisher> getAllPublishers () throws SQLException {
 		PublisherDAO pubDAO = new PublisherDAO();
 		return pubDAO.readAll();
 	}
@@ -106,7 +124,7 @@ public class AdministratorManagementSys {
 		pubDAO.insert(pub);
 	}
 	
-	public List<Author> getAllAuthor () throws SQLException {
+	public List<Author> getAllAuthors () throws SQLException {
 		AuthorDAO authDAO = new AuthorDAO();
 		return authDAO.readAll();
 	}
@@ -180,5 +198,13 @@ public class AdministratorManagementSys {
 		bl.setDueDate(date);
 		BookLoansDAO blDAO = new BookLoansDAO();
 		blDAO.update(bl);
+	}
+	
+	public List<Genre> getAllGenres () throws SQLException {
+		return new GenreDAO().readAll();
+	}
+	
+	public Genre getGenreById (int id) throws SQLException {
+		return new GenreDAO().readOne(id);
 	}
 }

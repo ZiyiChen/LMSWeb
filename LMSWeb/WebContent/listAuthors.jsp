@@ -4,7 +4,7 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<% 	List<Author> authors = new AdministratorManagementSys().getAllAuthor(); 
+<% 	List<Author> authors = new AdministratorManagementSys().getAllAuthors(); 
     String message = (String) request.getAttribute("message");
     String error = (String) request.getAttribute("error");
     %>
@@ -26,7 +26,7 @@
 </script>
 </head>
 <body>
-	<form name="createAuthorForm" action="createAuthor" method="post">
+	<form name="createAuthorForm" action="createAuthor.jsp" method="post">
 		<input type="submit" value="Create New Author"/>
 	</form>
 	
@@ -41,7 +41,7 @@
 	<form name="deleteAuthorForm" action="deleteAuthor" method="post">
 		<input type="hidden" id="deleId" name="authorId" />
 	</form>
-	<form name="editAuthorForm" action="editAuthor" method="post">
+	<form name="editAuthorForm" action="editAuthor.jsp" method="post">
 		<input type="hidden" id="editId" name="authorId" />
 	</form>
 	<table>
@@ -50,14 +50,17 @@
 			<td><b>Edit</b></td>
 			<td><b>Delete</b></td>
 		</tr>
-		<%for(Author author:authors) {%>
-		<tr>
-			<td><%=author.getAuthorName()%></td>
-			<td><input type="button" value="Edit" onclick="javascript:editAuthor('<%=author.getAuthorId()%>');"/></td>
-			<td><input type="button" value="Delete"
-				onclick="javascript:deleteAuthor('<%=author.getAuthorId()%>');" /></td>
-		</tr>
-		<% } %>
+		<%
+		if (authors != null) {
+			for(Author author:authors) {%>
+			<tr>
+				<td><%=author.getAuthorName()%></td>
+				<td><input type="button" value="Edit" onclick="javascript:editAuthor('<%=author.getAuthorId()%>');"/></td>
+				<td><input type="button" value="Delete"
+					onclick="javascript:deleteAuthor('<%=author.getAuthorId()%>');" /></td>
+			</tr>
+		<% }
+		}%>
 
 
 	</table>

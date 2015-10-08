@@ -8,11 +8,11 @@
 </head>
 <body>
 <form name="addPublisherForm" action="addPublisher" method="post">
-  New Publisher's Name:
+  New Publisher Name:
   <input type="text" name="publisherName" />
-  <br>New Publisher's Address:
+  <br>New Publisher Address:
   <input type="text" name="publisherAddress" />
-  <br>New Publisher's Phone:
+  <br>New Publisher Phone:
   <input type="text" name="publisherPhone" />
   <br><input type="submit" value="Add" />
 </form>

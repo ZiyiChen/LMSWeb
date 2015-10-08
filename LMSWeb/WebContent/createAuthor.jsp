@@ -8,7 +8,7 @@
 </head>
 <body>
 <form name="addAuthorForm" action="addAuthor" method="post">
-  New Author's Name:
+  New Author Name:
   <input type="text" name="authorName" />
   <br><input type="submit" value="Add" />
 </form>

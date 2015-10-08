@@ -14,11 +14,11 @@
 </head>
 <body>
 <form name="updatePublisherForm" action="updatePublisher" method="post">
-  Publisher's New Name:
+  Publisher New Name:
   <input type="text" name="publisherName" value="<%=pub.getPublisherName()%>"/>
-  <br>Publisher's New Address:
+  <br>Publisher New Address:
   <input type="text" name="publisherAddress" value="<%=pub.getAddress()%>"/>
-  <br>Publisher's New Phone Number:
+  <br>Publisher New Phone Number:
   <input type="text" name="publisherPhone" value="<%=pub.getPhone()%>"/>
   <br><input type="submit" value="Update" />
   <input type="hidden" id="publisherId" name="publisherId" value="<%=pubId%>"/>

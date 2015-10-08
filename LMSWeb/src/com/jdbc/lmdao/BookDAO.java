@@ -18,38 +18,49 @@ import com.jdbc.lmdo.Publisher;
 
 public class BookDAO extends BaseDAO{
 	public void insert(Book book) throws SQLException {
+		Integer pubId = book.getPublisher()==null?null:book.getPublisher().getPublisherId();
 		int bookId = saveWithId(
 				"insert into tbl_book (title, pubId) values (?,?)",
 				new Object[] { book.getTitle(),
-						book.getPublisher().getPublisherId()});
-		for (Author auth : book.getAuthors()) {
-			save("insert into tbl_book_authors (bookId, authorId) values (?,?)",
-					new Object[] { bookId, auth.getAuthorId() });
+						pubId});
+		if (book.getAuthors() != null){
+			for (Author auth : book.getAuthors()) {
+				save("insert into tbl_book_authors (bookId, authorId) values (?,?)",
+						new Object[] { bookId, auth.getAuthorId() });
+			}
 		}
-
-		for (Genre genre : book.getGenres()) {
-			save("insert into tbl_book_genres (bookId, genreId) values (?,?)",
-					new Object[] { bookId, genre.getGenreId() });
+		
+		if (book.getGenres() != null){
+			for (Genre genre : book.getGenres()) {
+				save("insert into tbl_book_genres (bookId, genre_id) values (?,?)",
+						new Object[] { bookId, genre.getGenreId() });
+			}
 		}
 		book.setBookId(bookId);
 	}
 	
 	public void update(Book book) throws SQLException {
+		Integer pubId = book.getPublisher()==null?null:book.getPublisher().getPublisherId();
 		save("update tbl_book  set title = ?, pubId = ? where bookId = ?",
-				new Object[] { book.getTitle(), book.getPublisher().getPublisherId(), book.getBookId() });
+				new Object[] { book.getTitle(), pubId, book.getBookId() });
 		//update tbl_book_authors table
 		save("delete from tbl_book_authors where bookId = ?",
 				new Object[] { book.getBookId() });
-		for (Author auth : book.getAuthors()) {
-			save("insert into tbl_book_authors (bookId, authorId) values (?,?)",
-					new Object[] { book.getBookId(), auth.getAuthorId() });
+		if (book.getAuthors() != null){
+			for (Author auth : book.getAuthors()) {
+				save("insert into tbl_book_authors (bookId, authorId) values (?,?)",
+						new Object[] { book.getBookId(), auth.getAuthorId() });
+			}
 		}
 		//update tbl_book_genres table
 		save("delete from tbl_book_genres where bookId = ?",
 				new Object[] { book.getBookId() });
-		for (Genre genre : book.getGenres()) {
-			save("insert into tbl_book_genres (bookId, genreId) values (?,?)",
-					new Object[] { book.getBookId(), genre.getGenreId() });
+		if (book.getGenres() != null){
+			for (Genre genre : book.getGenres()) {
+				//System.out.println("in book save: "+ book.getBookId() + genre.getGenreId());
+				save("insert into tbl_book_genres (bookId, genre_id) values (?,?)",
+						new Object[] { book.getBookId(), genre.getGenreId() });
+			}
 		}
 	}
 	

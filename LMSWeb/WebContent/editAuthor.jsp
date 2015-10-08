@@ -14,7 +14,7 @@
 </head>
 <body>
 <form name="updateAuthorForm" action="updateAuthor" method="post">
-  Author's New Name:
+  Author New Name:
   <input type="text" name="authorName" value="<%=auth.getAuthorName()%>"/>
   <br><input type="submit" value="Update" />
   <input type="hidden" id="authorId" name="authorId" value="<%=authId%>"/>

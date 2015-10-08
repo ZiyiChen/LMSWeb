@@ -1,6 +1,8 @@
 package com.jdbc.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,18 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jdbc.lmdo.Author;
+import com.jdbc.lmdo.Book;
+import com.jdbc.lmdo.Genre;
 import com.jdbc.lmdo.Publisher;
 import com.jdbc.lmsys.AdministratorManagementSys;
 
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({"/listAuthors","/editAuthor","/createAuthor","/addAuthor","/deleteAuthor","/updateAuthor",
-	"/listBooks","/editBook","/createBook","/addBook","/deleteBook","/updateBook",
-	"/listPublishers","/editPublisher","/createPublisher","/addPublisher","/deletePublisher","/updatePublisher",
-	"/listBranchs","/editBranch","/createBranch","/addBranch","/deleteBranch","/updateBranch",
-	"/listBorrowers","/editBorrower","/createBorrower","/addBorower","/deleteBorower","/updateBorower",
-	"/listLoans","/editLoan","/updateLoan"})
+@WebServlet({"/listAuthors","/addAuthor","/deleteAuthor","/updateAuthor",
+	"/listBooks","/addBook","/deleteBook","/updateBook",
+	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
+	"/listBranchs","/addBranch","/deleteBranch","/updateBranch",
+	"/listBorrowers","/addBorower","/deleteBorower","/updateBorower",
+	"/listLoans","/updateLoan"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -102,22 +106,10 @@ public class AdminServlet extends HttpServlet {
 			view = "/listAuthors.jsp";
 			break;
 		}
-		case "/editAuthor": {
-			message = null;
-			error = null;
-			view = "/editAuthor.jsp";
-			break;
-		}
 		case "/listAuthors": {
 			message = null;
 			error = null;
 			view = "/listAuthors.jsp";
-			break;
-		}
-		case "/createAuthor": {
-			message = null;
-			error = null;
-			view = "/createAuthor.jsp";
 			break;
 		}
 		case "/addPublisher": {
@@ -179,22 +171,122 @@ public class AdminServlet extends HttpServlet {
 			view = "/listPublishers.jsp";
 			break;
 		}
-		case "/editPublisher": {
-			message = null;
-			error = null;
-			view = "/editPublisher.jsp";
-			break;
-		}
 		case "/listPublishers": {
 			message = null;
 			error = null;
 			view = "/listPublishers.jsp";
 			break;
 		}
-		case "/createPublisher": {
+		case "/addBook": {
+			try {
+				AdministratorManagementSys amSys = new AdministratorManagementSys();
+				
+				Book bk = new Book();
+				String bookTitle = request.getParameter("bookTitle");
+				bk.setTitle(bookTitle);
+				
+				int pubId = Integer.parseInt(request.getParameter("bookPublisher"));
+				if (pubId != -1) {
+					Publisher pub = amSys.getPublisherById(pubId);
+					bk.setPublisher(pub);
+				}
+				
+				String[] authStrs = request.getParameterValues("addedAuthors");
+				if (authStrs != null) {
+					List<Author> auths = new ArrayList<Author>();
+					for(String s : authStrs) {
+						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+					}
+					bk.setAuthors(auths);
+				}
+				
+				String[] genreStrs = request.getParameterValues("addedGenres");
+				if (genreStrs != null) {
+					List<Genre> genres = new ArrayList<Genre>();
+					for(String s : genreStrs) {
+						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+					}
+					bk.setGenres(genres);
+				}
+				
+				amSys.insertBook(bk);
+				
+				error = null;
+				message = "Book add succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Book add failed. Reason: " + e.getMessage();
+			}
+			view = "/listBooks.jsp";
+			break;
+		}
+		case "/updateBook": {
+			try {
+				AdministratorManagementSys amSys = new AdministratorManagementSys();
+				
+				Book bk = new Book();
+				bk.setBookId(Integer.parseInt(request.getParameter("bookId")));
+				
+				String bookTitle = request.getParameter("bookTitle");
+				bk.setTitle(bookTitle);
+				
+				int pubId = Integer.parseInt(request.getParameter("bookPublisher"));
+				if (pubId != -1) {
+					Publisher pub = amSys.getPublisherById(pubId);
+					bk.setPublisher(pub);
+				}
+				
+				String[] authStrs = request.getParameterValues("updatedAuthors");
+				if (authStrs != null) {
+					List<Author> auths = new ArrayList<Author>();
+					for(String s : authStrs) {
+						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+					}
+					bk.setAuthors(auths);
+				}
+				
+				String[] genreStrs = request.getParameterValues("updatedGenres");
+				if (genreStrs != null) {
+					List<Genre> genres = new ArrayList<Genre>();
+					for(String s : genreStrs) {
+						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+					}
+					bk.setGenres(genres);
+				}
+				
+				amSys.updateBook(bk);
+				
+				error = null;
+				message = "Book update succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Book add failed. Reason: " + e.getMessage();
+			}
+			view = "/listBooks.jsp";
+			break;
+		}
+		case "/deleteBook": {
+			int bookId = Integer.parseInt(request.getParameter("bookId"));
+			Book book = new Book();
+			book.setBookId(bookId);
+			try {
+				new AdministratorManagementSys().deleteBook(book);
+				error = null;
+				message = "Book delete succesfully";
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = null;
+				error = "Book delete failed. Reason: " + e.getMessage();
+			}
+			view = "/listBooks.jsp";
+			break;
+		}
+		case "/listBooks": {
 			message = null;
 			error = null;
-			view = "/createPublisher.jsp";
+			view = "/listBooks.jsp";
 			break;
 		}
 		default:
