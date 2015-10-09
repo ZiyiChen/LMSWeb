@@ -48,7 +48,8 @@ public abstract class BaseDAO {
 //	}
 	
 	protected int saveWithId(String query, Object[] values) throws SQLException {
-		PreparedStatement stmt = getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		Connection conn = getConnection();
+		PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		
 		int count = 1;
 		for(Object obj : values) {
@@ -58,14 +59,20 @@ public abstract class BaseDAO {
 		
 		stmt.executeUpdate();
 		ResultSet rs = stmt.getGeneratedKeys();
-		if(rs.next())
-			return rs.getInt(1);
-		else 
+		if(rs.next()){
+			int id = rs.getInt(1);
+			conn.close();
+			return id;
+		}
+		else {
+			conn.close();
 			return -1;
+		}
 	}
 
 	protected void save(String query, Object[] values) throws SQLException {
-		PreparedStatement stmt = getConnection().prepareStatement(query);
+		Connection conn = getConnection();
+		PreparedStatement stmt = conn.prepareStatement(query);
 		
 		int count = 1;
 		for(Object obj : values) {
@@ -74,10 +81,12 @@ public abstract class BaseDAO {
 		}
 		
 		stmt.executeUpdate();
+		conn.close();
 	}
 	
 	protected Object read(String query, Object[] values) throws SQLException {
-		PreparedStatement stmt = getConnection().prepareStatement(query);
+		Connection conn = getConnection();
+		PreparedStatement stmt = conn.prepareStatement(query);
 
 		if(values != null) {
 			int count = 1;
@@ -88,8 +97,9 @@ public abstract class BaseDAO {
 		}
 		
 		ResultSet rs = stmt.executeQuery();
-
-		return this.convertResult(rs);
+		Object obj = this.convertResult(rs);
+		conn.close();
+		return obj;
 
 	}
 }

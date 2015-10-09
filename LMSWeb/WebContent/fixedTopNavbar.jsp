@@ -13,9 +13,12 @@
 
     <!-- Bootstrap core CSS -->
     <link href="./Bootstrap/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="./Bootstrap/dashboard.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="./Bootstrap/navbar-fixed-top.css" rel="stylesheet">
+    <!-- <link href="./Bootstrap/navbar-fixed-top.css" rel="stylesheet"> -->
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -61,5 +64,6 @@
     <script src="./Bootstrap/jquery.min.js"></script>
     <script src="./Bootstrap/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./Bootstrap/holder.min.js"></script>
     <script src="./Bootstrap/ie10-viewport-bug-workaround.js"></script>
     </body>

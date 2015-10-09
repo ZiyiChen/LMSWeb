@@ -29,9 +29,7 @@
 </script>
 </head>
 <body>
-	<form name="createBookForm" action="createBook.jsp" method="post">
-		<input type="submit" value="Create New Book"/>
-	</form>
+	
 	
 	
 	<%if(message != null) {%>
@@ -47,7 +45,14 @@
 	<form name="editBookForm" action="editBook.jsp" method="post">
 		<input type="hidden" id="editId" name="bookId" />
 	</form>
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<div class="table-responsive">
+	<button type="button" class="btn btn-info">
+          <span class="glyphicon glyphicon-plus-sign"></span> Create New Book
+    </button>
+	<form name="createBookForm" action="createBook.jsp" method="post">
+		<input type="submit" value="Create New Book"/>
+	</form>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -95,6 +100,7 @@
 
 
 	</table>
+	</div>
 	</div>
 </body>
 </html>
