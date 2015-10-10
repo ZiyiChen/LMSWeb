@@ -13,7 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="./Bootstrap/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" type="text/css" href="./Bootstrap/bootstrap-select.min.css">
     <!-- Custom styles for this template -->
     <link href="./Bootstrap/dashboard.css" rel="stylesheet">
 
@@ -67,4 +67,5 @@
     <script src="./Bootstrap/holder.min.js"></script>
     <script src="./Bootstrap/ie10-viewport-bug-workaround.js"></script>
     <script src="./scripts/handlebars-v4.0.2.js"></script>
+    <script type="text/javascript" src="./Bootstrap/bootstrap-select.min.js"></script>
     </body>

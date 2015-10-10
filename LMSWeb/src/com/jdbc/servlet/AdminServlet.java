@@ -26,7 +26,8 @@ import com.jdbc.lmsys.AdministratorManagementSys;
 	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
 	"/listBranchs","/addBranch","/deleteBranch","/updateBranch",
 	"/listBorrowers","/addBorower","/deleteBorower","/updateBorower",
-	"/listLoans","/updateLoan"})
+	"/listLoans","/updateLoan",
+	"/listGenres"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -104,7 +105,19 @@ public class AdminServlet extends HttpServlet {
 				mapper.writeValue(response.getOutputStream(), aus);
 			}catch (Exception e) {
 				e.printStackTrace();
-				message = "List Publishers failed. Reason: " + e.getMessage();
+				message = "List Authors failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/listGenres": {
+			try {
+				List<Genre> gens = new AdministratorManagementSys().getAllGenres();
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), gens);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Genres failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;
@@ -185,7 +198,7 @@ public class AdminServlet extends HttpServlet {
 					bk.setPublisher(pub);
 				}
 				
-				String[] authStrs = request.getParameterValues("addedAuthors");
+				String[] authStrs = request.getParameterValues("addedAuthors[]");
 				if (authStrs != null) {
 					List<Author> auths = new ArrayList<Author>();
 					for(String s : authStrs) {
@@ -194,7 +207,7 @@ public class AdminServlet extends HttpServlet {
 					bk.setAuthors(auths);
 				}
 				
-				String[] genreStrs = request.getParameterValues("addedGenres");
+				String[] genreStrs = request.getParameterValues("addedGenres[]");
 				if (genreStrs != null) {
 					List<Genre> genres = new ArrayList<Genre>();
 					for(String s : genreStrs) {
@@ -259,7 +272,6 @@ public class AdminServlet extends HttpServlet {
 			book.setBookId(bookId);
 			try {
 				new AdministratorManagementSys().deleteBook(book);
-				message = "Book delete succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Book delete failed. Reason: " + e.getMessage();

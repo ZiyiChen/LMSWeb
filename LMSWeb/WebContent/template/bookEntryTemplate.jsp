@@ -12,7 +12,7 @@
 			{{genreName}}&nbsp,
 		{{/each}}
 	{{/if}}</td>
-	<td><button type="button" class="btn btn-primary" onclick="javascript:editModal('{{authorId}}','{{authorName}}');">Edit</button></td>
-	<td><button type="button" class="btn btn-danger" onclick="javascript:deleModal('{{authorId}}');">Delete</button></td>
+	<td><button type="button" class="btn btn-primary" onclick="javascript:editModal('{{bookId}}','{{authorName}}');">Edit</button></td>
+	<td><button type="button" class="btn btn-danger" onclick="javascript:deleteBook('{{bookId}}');">Delete</button></td>
   </tr>
 </script>

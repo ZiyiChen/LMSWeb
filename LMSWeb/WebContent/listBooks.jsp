@@ -13,16 +13,13 @@
 <html>
 <head>
 <script src="./scripts/adminHelper.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-<script src="http://silviomoreto.github.io/bootstrap-select/javascripts/bootstrap-select.js"></script>
 <script>$(function(){listBooks();});
-		$('.selectpicker').selectpicker();</script>
+		$('.selectpicker').selectpicker();
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Book List</title>
 </head>
 <body>
-
 	<div class="modal fade" id="createBookModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -35,27 +32,26 @@
 				</div>
 				<div class="modal-body">
 					<form name="addBookForm" action="addBook" method="post">
-						New Book Title: <input type="text" name="bookTitle" /> 
+						New Book Title: <input type="text" name="bookTitle" class="form-control" id="crtBkTitle"/> 
 						
-						<br><br>New Book Publisher: 
-						<br><select class="selectpicker" name="bookPublisher" id="crtBkPubSel">
+						<br>New Book Publisher: 
+						<br><select class="selectpicker" data-width="100%" name="bookPublisher" id="crtBkPubSel" data-live-search="true">
 						<option value=-1 selected="selected">...</option>
 						
 						</select> 
 						
 						<br><br>New Book Authors: 
-						<select name="addedAuthors" class="selectpicker" id="crtBkAuthSel" multiple>
+						<br><select name="addedAuthors" data-width="100%" class="selectpicker" id="crtBkAuthSel" data-live-search="true" multiple>
 				        </select>
 				        
 						<br><br>New Book Genres: 
-						<select name="addedGenres" class="selectpicker" id="crtBkGenSel" multiple>
+						<br><select name="addedGenres" data-width="100%" class="selectpicker" id="crtBkGenSel" data-live-search="true" multiple>
 				        </select>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary"
-						onclick="javascript:addBook();">Add</button>
+					<button type="button" class="btn btn-primary" onclick="javascript:addBook();" data-dismiss="modal">Add</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
