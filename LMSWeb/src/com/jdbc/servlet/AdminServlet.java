@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdbc.lmdo.Author;
 import com.jdbc.lmdo.Book;
 import com.jdbc.lmdo.Genre;
@@ -50,8 +51,6 @@ public class AdminServlet extends HttpServlet {
 		
 		String function = request.getRequestURI().substring(request.getContextPath().length(), request.getRequestURI().length());
 		String message = null;
-		String error = null;
-		String view = null;
 		System.out.println("action: "+function);
 		
 		switch (function) {
@@ -62,14 +61,12 @@ public class AdminServlet extends HttpServlet {
 
 			try {
 				new AdministratorManagementSys().insertAuthor(author);
-				error = null;
 				message = "Author add succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = null;
-				error = "Author add failed. Reason: " + e.getMessage();
+				message = "Author add failed. Reason: " + e.getMessage();
 			}
-			view = "/listAuthors.jsp";
 			break;
 		}
 		case "/updateAuthor": {
@@ -80,14 +77,11 @@ public class AdminServlet extends HttpServlet {
 			author.setAuthorId(authorId);
 			try {
 				new AdministratorManagementSys().updateAuthor(author);
-				error = null;
 				message = "Author update succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Author update failed. Reason: " + e.getMessage();
+				message = "Author update failed. Reason: " + e.getMessage();
 			}
-			view = "/listAuthors.jsp";
 			break;
 		}
 		case "/deleteAuthor": {
@@ -96,20 +90,23 @@ public class AdminServlet extends HttpServlet {
 			author.setAuthorId(authorId);
 			try {
 				new AdministratorManagementSys().deleteAuthor(author);
-				error = null;
 				message = "Author delete succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Author delete failed. Reason: " + e.getMessage();
+				message = "Author delete failed. Reason: " + e.getMessage();
 			}
-			view = "/listAuthors.jsp";
 			break;
 		}
 		case "/listAuthors": {
-			message = null;
-			error = null;
-			view = "/listAuthors.jsp";
+			try {
+				List<Author> aus = new AdministratorManagementSys().getAllAuthors();
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), aus);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Publishers failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
 			break;
 		}
 		case "/addPublisher": {
@@ -123,14 +120,11 @@ public class AdminServlet extends HttpServlet {
 			
 			try {
 				new AdministratorManagementSys().insertPublisher(publisher);
-				error = null;
 				message = "Publisher add succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Publisher add failed. Reason: " + e.getMessage();
+				message = "Publisher add failed. Reason: " + e.getMessage();
 			}
-			view = "/listPublishers.jsp";
 			break;
 		}
 		case "/updatePublisher": {
@@ -145,14 +139,11 @@ public class AdminServlet extends HttpServlet {
 			publisher.setPublisherId(publisherId);
 			try {
 				new AdministratorManagementSys().updatePublisher(publisher);
-				error = null;
 				message = "Publisher update succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Publisher update failed. Reason: " + e.getMessage();
+				message = "Publisher update failed. Reason: " + e.getMessage();
 			}
-			view = "/listPublishers.jsp";
 			break;
 		}
 		case "/deletePublisher": {
@@ -161,20 +152,23 @@ public class AdminServlet extends HttpServlet {
 			publisher.setPublisherId(publisherId);
 			try {
 				new AdministratorManagementSys().deletePublisher(publisher);
-				error = null;
 				message = "Publisher delete succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Publisher delete failed. Reason: " + e.getMessage();
+				message = "Publisher delete failed. Reason: " + e.getMessage();
 			}
-			view = "/listPublishers.jsp";
 			break;
 		}
 		case "/listPublishers": {
-			message = null;
-			error = null;
-			view = "/listPublishers.jsp";
+			try {
+				List<Publisher> pbs = new AdministratorManagementSys().getAllPublishers();
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), pbs);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Publishers failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
 			break;
 		}
 		case "/addBook": {
@@ -210,15 +204,11 @@ public class AdminServlet extends HttpServlet {
 				}
 				
 				amSys.insertBook(bk);
-				
-				error = null;
-				message = "Book add succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Book add failed. Reason: " + e.getMessage();
+				message = "Book add failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
-			view = "/listBooks.jsp";
 			break;
 		}
 		case "/updateBook": {
@@ -256,15 +246,11 @@ public class AdminServlet extends HttpServlet {
 				}
 				
 				amSys.updateBook(bk);
-				
-				error = null;
-				message = "Book update succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Book add failed. Reason: " + e.getMessage();
+				message = "Book add failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
-			view = "/listBooks.jsp";
 			break;
 		}
 		case "/deleteBook": {
@@ -273,29 +259,40 @@ public class AdminServlet extends HttpServlet {
 			book.setBookId(bookId);
 			try {
 				new AdministratorManagementSys().deleteBook(book);
-				error = null;
 				message = "Book delete succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
-				error = "Book delete failed. Reason: " + e.getMessage();
+				message = "Book delete failed. Reason: " + e.getMessage();
 			}
-			view = "/listBooks.jsp";
 			break;
 		}
 		case "/listBooks": {
-			message = null;
-			error = null;
-			view = "/listBooks.jsp";
+			try {
+				List<Book> bks = new AdministratorManagementSys().getAllFullLoadBooks();
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), bks);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List books failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/getBookById": {
+			try {
+				Book bk = new AdministratorManagementSys().getBookById(Integer.parseInt(request.getParameter("bookId")));
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), bk);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "Get book by id failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
 			break;
 		}
 		default:
 			break;
 		}
-		request.setAttribute("message", message);
-		request.setAttribute("error", error);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher(view);
-		rd.forward(request, response);
 	}
 
 }

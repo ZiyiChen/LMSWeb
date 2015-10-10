@@ -41,7 +41,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://getbootstrap.com/examples/dashboard/#">LMS</a>
+          <a class="navbar-brand" href="index.jsp">LMS</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -66,4 +66,5 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./Bootstrap/holder.min.js"></script>
     <script src="./Bootstrap/ie10-viewport-bug-workaround.js"></script>
+    <script src="./scripts/handlebars-v4.0.2.js"></script>
     </body>
