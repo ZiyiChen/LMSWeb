@@ -27,143 +27,89 @@ function addBook () {
 			  bookPublisher: $("#crtBkPubSel").val(),
 			  addedAuthors: $("#crtBkAuthSel").val(),
 			  addedGenres: $("#crtBkGenSel").val()}
-	}).done(function( msg ) {
-		$("#message").html(msg);
+	}).done(function(msg) {
+		if (!msg) 
+			showSuccess("Add Book Success");
+		else
+			showWarning(msg);
 		listBooks();
 	});
 }
 
-var loadOnce = false;
+function updateBook () {
+	$.ajax({
+		  method: "POST",
+		  url: "updateBook",
+		  data: {bookId: $("#edBkId").val(),
+			  bookTitle: $("#edBkTitle").val(),
+			  bookPublisher: $("#edBkPubSel").val(),
+			  updatedAuthors: $("#edBkAuthSel").val(),
+			  updatedGenres: $("#edBkGenSel").val()}
+	}).done(function( msg ) {
+		if (!msg) 
+			showSuccess("Update Book Success");
+		else
+			showWarning(msg);
+		listBooks();
+	});
+}
+
+var loadCreateOnce = false;
 function createBookModal() {
-	if(!loadOnce) {
-		getValidPublisher(null, $('#crtBkPubSel'));
-		getValidAuthor(null, $('#crtBkAuthSel'));
-		getValidGenre(null, $('#crtBkGenSel'));
-		loadOnce = true;
-	} else 
-		resetDataWithin($('#createBookModal'));
+	if(!loadCreateOnce) {
+		getValidPublisher($('#crtBkPubSel'));
+		getValidAuthor($('#crtBkAuthSel'));
+		getValidGenre($('#crtBkGenSel'));
+		loadCreateOnce = true;
+	}
 	$('#createBookModal').modal();
 }
 
-function resetDataWithin (element) {
-	element.find("input,textarea,select").val('');
-	$('.selectpicker').selectpicker('refresh');
-}
-
-function getValidPublisher (bkId, selectionElement) {
+function getValidPublisher (selectionElement) {
 	$.ajax({
 		method:"POST",
 		url:"listPublishers"
 	}).done(function (data) {
 		var pubArr = $.parseJSON(data);
-		if (bkId) {
-			var bk;
-			$.ajax({
-				method:"POST",
-				url:"getBookById",
-				data: { bookId: bkId}
-			}).done(function (data) {
-				bk = $.parseJSON(data);
-			});
-			if (!bk.publisher) {
-				bk.publisher = [];
-			}
-			$.each(pubArr, function(index, item) {
-				var isSelected = (item.publisherId == bk.publisher.publisherId);
-				selectionElement.append($('<option>', { 
-			        value: item.publisherId,
-			        text : item.publisherName,
-			        selected : isSelected
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}else {
-			$.each(pubArr, function(index, item) {
-				selectionElement.append($('<option>', { 
-			        value: item.publisherId,
-			        text : item.publisherName
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}
+		$.each(pubArr, function(index, item) {
+			selectionElement.append($('<option>', { 
+		        value: item.publisherId,
+		        text : item.publisherName
+		    }));
+			selectionElement.selectpicker('refresh');
+		});
 	});
 }
 
-function getValidAuthor (bkId, selectionElement) {
+function getValidAuthor (selectionElement) {
 	$.ajax({
 		method:"POST",
 		url:"listAuthors"
 	}).done(function (data) {
 		var authArr = $.parseJSON(data);
-		if (bkId) {
-			var bk;
-			$.ajax({
-				method:"POST",
-				url:"getBookById",
-				data: { bookId: bkId}
-			}).done(function (data) {
-				bk = $.parseJSON(data);
-			});
-			if (!bk.authors) {
-				bk.authors = [];
-			}
-			$.each(authArr, function(index, item) {
-				var isSelected = (jQuery.inArray(item, bk.authors) !== -1);
-				selectionElement.append($('<option>', { 
-			        value: item.authorId,
-			        text : item.authorName,
-			        selected : isSelected
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}else {
-			$.each(authArr, function(index, item) {
-				selectionElement.append($('<option>', { 
-			        value: item.authorId,
-			        text : item.authorName
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}
+		$.each(authArr, function(index, item) {
+			selectionElement.append($('<option>', { 
+		        value: item.authorId,
+		        text : item.authorName
+		    }));
+			selectionElement.selectpicker('refresh');
+		});
 	});
 }
 
-function getValidGenre (bkId, selectionElement) {
+function getValidGenre (selectionElement) {
 	$.ajax({
 		method:"POST",
 		url:"listGenres"
 	}).done(function (data) {
 		var genArr = $.parseJSON(data);
-		if (bkId) {
-			var bk;
-			$.ajax({
-				method:"POST",
-				url:"getBookById",
-				data: { bookId: bkId}
-			}).done(function (data) {
-				bk = $.parseJSON(data);
-			});
-			if (!bk.genres) {
-				bk.genres = [];
-			}
-			$.each(genArr, function(index, item) {
-				var isSelected = (jQuery.inArray(item, bk.genres) !== -1);
-				selectionElement.append($('<option>', { 
-			        value: item.genreId,
-			        text : item.genreName,
-			        selected : isSelected
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}else {
-			$.each(genArr, function(index, item) {
-				selectionElement.append($('<option>', { 
-			        value: item.genreId,
-			        text : item.genreName
-			    }));
-				selectionElement.selectpicker('refresh');
-			});
-		}
+		$.each(genArr, function(index, item) {
+			selectionElement.append($('<option>', { 
+		        value: item.genreId,
+		        text : item.genreName
+		    }));
+			selectionElement.selectpicker('refresh');
+		});
 	});
 }
 
@@ -173,12 +119,77 @@ function deleteBook(id) {
 		method:"POST",
 		url:"deleteBook",
 		data: { bookId: id}
-	}).done(function (data) {
-		$("#message").html(data);
+	}).done(function (msg) {
+		if (!msg) 
+			showSuccess("Delete Book Success");
+		else
+			showWarning(msg);
 		listBooks();
 	});
 }
+
+var loadEditOnce = false;
 function editBook(id) {
-	document.getElementById('editId').value = id;
-	document.editBookForm.submit();
+	if (!loadEditOnce){
+		getValidPublisher($('#edBkPubSel'));
+		getValidAuthor($('#edBkAuthSel'));
+		getValidGenre($('#edBkGenSel'));
+		loadEditOnce = true;
+	}
+	selectBookProperty(id);
+	$('#editBookModal').modal();
 }
+
+function selectBookProperty (bkId) {
+	var bk;
+	$.ajax({
+		method:"POST",
+		url:"getBookById",
+		data: { bookId: bkId}
+	}).done(function (data) {
+		bk = $.parseJSON(data);
+		$("#edBkId").val(bkId);
+		$("#edBkTitle").val(bk.title);
+		if (bk.genres != null) {
+			var addedGens = [];
+			$.each(bk.genres, function(index, item) {
+				addedGens.push(item.genreId);
+			});
+			$("#edBkGenSel option").each(function(){
+				if($.inArray(parseInt($(this).val(), 10), addedGens) > -1){
+					$(this).attr('selected', 'selected');
+					$("#edBkGenSel").selectpicker('refresh');
+				}
+			});
+			$("#edBkGenSel").selectpicker('refresh');
+		}
+		if (bk.authors) {
+			var addedAus = [];
+			$.each(bk.authors, function(index, item) {
+				addedAus.push(item.authorId);
+			});
+			$("#edBkAuthSel option").each(function(){
+				if($.inArray(parseInt($(this).val(),10), addedAus) > -1){
+					$(this).attr('selected', 'selected');
+				}
+			});
+			$("#edBkAuthSel").selectpicker('refresh');
+		}
+		if (bk.publisher) {
+			var addedPub = bk.publisher;
+			$("#edBkPubSel option").each(function(){
+				if($(this).val() == addedPub.publisherId){
+					$(this).attr('selected', 'selected');
+				}
+			});
+			$("#edBkPubSel").selectpicker('refresh');
+		}
+	});
+}
+
+$(function(){
+	$('#createBookModal').on('hidden.bs.modal', function () {
+		$(this).find("input,textarea,select").val('');
+		$('.selectpicker').selectpicker('refresh');
+	});
+});

@@ -22,7 +22,7 @@ import com.jdbc.lmsys.AdministratorManagementSys;
  * Servlet implementation class AdminServlet
  */
 @WebServlet({"/listAuthors","/addAuthor","/deleteAuthor","/updateAuthor",
-	"/listBooks","/addBook","/deleteBook","/updateBook",
+	"/listBooks","/addBook","/deleteBook","/updateBook","/getBookById",
 	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
 	"/listBranchs","/addBranch","/deleteBranch","/updateBranch",
 	"/listBorrowers","/addBorower","/deleteBorower","/updateBorower",
@@ -240,7 +240,7 @@ public class AdminServlet extends HttpServlet {
 					bk.setPublisher(pub);
 				}
 				
-				String[] authStrs = request.getParameterValues("updatedAuthors");
+				String[] authStrs = request.getParameterValues("updatedAuthors[]");
 				if (authStrs != null) {
 					List<Author> auths = new ArrayList<Author>();
 					for(String s : authStrs) {
@@ -249,7 +249,7 @@ public class AdminServlet extends HttpServlet {
 					bk.setAuthors(auths);
 				}
 				
-				String[] genreStrs = request.getParameterValues("updatedGenres");
+				String[] genreStrs = request.getParameterValues("updatedGenres[]");
 				if (genreStrs != null) {
 					List<Genre> genres = new ArrayList<Genre>();
 					for(String s : genreStrs) {
@@ -292,7 +292,7 @@ public class AdminServlet extends HttpServlet {
 		}
 		case "/getBookById": {
 			try {
-				Book bk = new AdministratorManagementSys().getBookById(Integer.parseInt(request.getParameter("bookId")));
+				Book bk = new AdministratorManagementSys().getFullLoadBookById(Integer.parseInt(request.getParameter("bookId")));
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.writeValue(response.getOutputStream(), bk);
 			}catch (Exception e) {

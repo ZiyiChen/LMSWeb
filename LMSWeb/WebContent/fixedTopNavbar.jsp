@@ -57,6 +57,59 @@
       </div>
     </nav>
 
+	<script>
+		function showSuccess(msg){
+			$.notify({
+			message: msg 
+			},{
+				animate: {
+					enter: 'animated fadeInDown',
+					exit: 'animated fadeOutUp'
+				},
+				placement: {
+					from: "top",
+					align: "center"
+				},
+				type: 'success',
+				allow_dismiss: false,
+				delay: 500
+			});
+		}
+		function showInfo(msg){
+			$.notify({
+			message: msg 
+			},{
+				animate: {
+					enter: 'animated fadeInDown',
+					exit: 'animated fadeOutUp'
+				},
+				placement: {
+					from: "top",
+					align: "center"
+				},
+				type: 'info',
+				allow_dismiss: false,
+				delay: 500
+			});
+		}
+		function showWarning(msg){
+			$.notify({
+			message: msg 
+			},{
+				animate: {
+					enter: 'animated fadeInDown',
+					exit: 'animated fadeOutUp'
+				},
+				placement: {
+					from: "top",
+					align: "center"
+				},
+				type: 'danger',
+				allow_dismiss: false,
+				delay: 500
+			});
+		}
+	</script>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -67,5 +120,6 @@
     <script src="./Bootstrap/holder.min.js"></script>
     <script src="./Bootstrap/ie10-viewport-bug-workaround.js"></script>
     <script src="./scripts/handlebars-v4.0.2.js"></script>
+    <script src="./scripts/bootstrap-notify.min.js"></script>
     <script type="text/javascript" src="./Bootstrap/bootstrap-select.min.js"></script>
     </body>
