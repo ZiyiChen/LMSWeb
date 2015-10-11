@@ -13,6 +13,6 @@
 		{{/each}}
 	{{/if}}</td>
 	<td><button type="button" class="btn btn-primary" onclick="javascript:editBook('{{bookId}}');">Edit</button></td>
-	<td><button type="button" class="btn btn-danger" onclick="javascript:deleteBook('{{bookId}}');">Delete</button></td>
+	<td><button type="button" class="btn btn-danger" onclick="javascript:deleteBookModal('{{bookId}}','{{title}}');">Delete</button></td>
   </tr>
 </script>

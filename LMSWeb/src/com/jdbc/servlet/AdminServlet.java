@@ -1,6 +1,7 @@
 package com.jdbc.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import com.jdbc.lmsys.AdministratorManagementSys;
  * Servlet implementation class AdminServlet
  */
 @WebServlet({"/listAuthors","/addAuthor","/deleteAuthor","/updateAuthor",
-	"/listBooks","/addBook","/deleteBook","/updateBook","/getBookById",
+	"/listBooks","/addBook","/deleteBook","/updateBook","/getBookById","/countBook",
 	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
 	"/listBranchs","/addBranch","/deleteBranch","/updateBranch",
 	"/listBorrowers","/addBorower","/deleteBorower","/updateBorower",
@@ -280,10 +281,25 @@ public class AdminServlet extends HttpServlet {
 		}
 		case "/listBooks": {
 			try {
-				List<Book> bks = new AdministratorManagementSys().getAllFullLoadBooks();
+				int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+				int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+				String search = request.getParameter("searchText");
+				List<Book> bks = new AdministratorManagementSys().searchSizedFullLoadBooks(pageNo, pageSize, search);
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.writeValue(response.getOutputStream(), bks);
 			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List books failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/countBook": {
+			try {
+				String search = request.getParameter("searchText");
+				int count = new AdministratorManagementSys().countBook(search);
+				response.getWriter().write("" + count);
+			} catch (Exception e) {
 				e.printStackTrace();
 				message = "List books failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);

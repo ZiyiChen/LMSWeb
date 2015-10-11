@@ -207,4 +207,19 @@ public class AdministratorManagementSys {
 	public Genre getGenreById (int id) throws SQLException {
 		return new GenreDAO().readOne(id);
 	}
+
+	public List<Book> searchSizedFullLoadBooks(int pageNo, int pageSize, String searchText) throws SQLException {
+		List<Book> bks = new BookDAO().searchSizedBooks(pageNo, pageSize, searchText);
+		AuthorDAO auDAO = new AuthorDAO();
+		GenreDAO genDAO = new GenreDAO();
+		for (Book bk : bks) {
+			bk.setAuthors(auDAO.readAllByBook(bk));
+			bk.setGenres(genDAO.readAllByBook(bk));
+		}
+		return bks;
+	}
+	
+	public int countBook (String searchText) throws SQLException {
+		return new BookDAO().countBooks(searchText);
+	}
 }

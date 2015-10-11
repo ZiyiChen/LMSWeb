@@ -1,21 +1,47 @@
 /**
  * 
  */
+var pageSize = 10;
 
-function listBooks() {
-	var dataString = "";
-	var source = $("#bookEntryTemplate").html();
-	var template = Handlebars.compile(source);
+function listBooks(searchText, pageNo, pageSize) {
 	$.ajax({
 		method:"POST",
-		url:"listBooks"
+		url:"listBooks",
+		data:{
+			searchText: searchText,
+			pageNo: pageNo,
+			pageSize : pageSize
+		}
 	}).done(function (data) {
+		var dataString = "";
+		var source = $("#bookEntryTemplate").html();
+		var template = Handlebars.compile(source);
 		data = $.parseJSON(data);
 		$.each(data, function(id, item){
 			var html = template (item);
 			dataString += html;
 		});
 		$("#bookTbody").html(dataString);
+	});
+	$.ajax({
+		method:"POST",
+		url:"countBook",
+		data:{searchText: searchText}
+	}).done(function (data) {
+		var noPage = Math.ceil(data/pageSize);
+		var dataString = "";
+		var source = $("#pageEntryTemplate").html();
+		var template = Handlebars.compile(source);
+		for(i = 1; i <= noPage; i++){
+			var cass = "";
+			if (i == pageNo)
+				cass = "active";
+			var pg = {pageNo : i, pageSize : pageSize, cass : cass};
+			var html = template(pg);
+			dataString += html;
+		}
+		$("#pages").html("");
+		$("#pages").html(dataString);
 	});
 }
 
@@ -32,7 +58,7 @@ function addBook () {
 			showSuccess("Add Book Success");
 		else
 			showWarning(msg);
-		listBooks();
+		listBooks($('#searchText').val(), 1, pageSize);
 	});
 }
 
@@ -50,7 +76,7 @@ function updateBook () {
 			showSuccess("Update Book Success");
 		else
 			showWarning(msg);
-		listBooks();
+		listBooks($('#searchText').val(), 1, pageSize);
 	});
 }
 
@@ -113,18 +139,23 @@ function getValidGenre (selectionElement) {
 	});
 }
 
-function deleteBook(id) {
-	var s = id;
+function deleteBookModal (id, title) {
+	$('#delBkMsg').html("Are you sure you want to delete: \"<em>"+title+"</em>\" ?");
+	$('#deBkId').val(id);
+	$('#deleteBookModal').modal();
+}
+
+function destoryBook() {
 	$.ajax({
 		method:"POST",
 		url:"deleteBook",
-		data: { bookId: id}
+		data: { bookId: $('#deBkId').val()}
 	}).done(function (msg) {
 		if (!msg) 
 			showSuccess("Delete Book Success");
 		else
 			showWarning(msg);
-		listBooks();
+		listBooks($('#searchText').val(), 1, pageSize);
 	});
 }
 

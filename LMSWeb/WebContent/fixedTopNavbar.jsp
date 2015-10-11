@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="./Bootstrap/bootstrap-select.min.css">
     <!-- Custom styles for this template -->
     <link href="./Bootstrap/dashboard.css" rel="stylesheet">
-
+	<link rel="stylesheet" type="text/css" href="./CSS/lms.css">
     <!-- Custom styles for this template -->
     <!-- <link href="./Bootstrap/navbar-fixed-top.css" rel="stylesheet"> -->
 

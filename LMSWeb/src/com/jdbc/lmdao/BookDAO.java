@@ -118,4 +118,15 @@ public class BookDAO extends BaseDAO{
 		}
 		return books;
 	}
+	
+	public int countBooks(String searchText) throws SQLException {
+		searchText = '%' + searchText + '%';
+		return count ("select count(*) from tbl_book where title like ?", searchText);
+	}
+	
+	public List<Book> searchSizedBooks(int pageNo, int pageSize, String searchText) throws SQLException {
+		searchText = '%' + searchText + '%';
+		return (List<Book>) read (setPageLimits(pageNo, pageSize, "select * from tbl_book where title like ?"),
+				new Object[] {searchText});
+	}
 }

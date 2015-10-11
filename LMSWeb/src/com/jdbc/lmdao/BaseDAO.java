@@ -102,4 +102,23 @@ public abstract class BaseDAO {
 		return obj;
 
 	}
+	
+	protected int count (String query, String searchText) throws SQLException {
+		Connection conn = getConnection();
+		PreparedStatement stmt = conn.prepareStatement(query);
+		stmt.setString(1, searchText);
+		ResultSet rs = stmt.executeQuery();
+		int result = 0;
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+		conn.close();
+		return result;
+	}
+	
+	protected String setPageLimits(int pageNo, int pageSize, String query) {
+		StringBuilder sb = new StringBuilder(query);
+		sb.append(" LIMIT " + (pageNo - 1)*pageSize + "," + pageSize);
+		return sb.toString();
+	}
 }
