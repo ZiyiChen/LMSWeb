@@ -1,6 +1,3 @@
-<%@page import="com.jdbc.lmdo.Author"%>
-<%@page import="java.util.List"%>
-<%@page import="com.jdbc.lmsys.AdministratorManagementSys"%>
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 

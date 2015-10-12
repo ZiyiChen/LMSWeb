@@ -288,6 +288,7 @@ public class AdminServlet extends HttpServlet {
 				
 				int pubId = Integer.parseInt(request.getParameter("bookPublisher"));
 				if (pubId != -1) {
+					//TODO make update book create new obj with ID
 					Publisher pub = amSys.getPublisherById(pubId);
 					bk.setPublisher(pub);
 				}

@@ -1,9 +1,3 @@
-<%@page import="com.jdbc.lmdo.Publisher"%>
-<%@page import="com.jdbc.lmdo.Genre"%>
-<%@page import="com.jdbc.lmdo.Author"%>
-<%@page import="com.jdbc.lmdo.Book"%>
-<%@page import="java.util.List"%>
-<%@page import="com.jdbc.lmsys.AdministratorManagementSys"%>
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="fixedTopNavbar.jsp" %>

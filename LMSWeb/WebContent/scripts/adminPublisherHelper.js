@@ -1,6 +1,4 @@
 var pageSize = 13;
-var loadCreateOnce = false;
-var loadEditOnce = false;
 var currentPage = 1;
 var entries = 0;
 /**
