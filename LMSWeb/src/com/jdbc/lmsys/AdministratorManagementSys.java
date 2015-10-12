@@ -241,4 +241,14 @@ public class AdministratorManagementSys {
 	public int countAuthor(String search) throws SQLException {
 		return new AuthorDAO().countAuthors(search);
 	}
+
+	public List<Publisher> searchPublishers(int pageNo, int pageSize,
+			String search) throws SQLException {
+		PublisherDAO pubDAO = new PublisherDAO();
+		return pubDAO.searchSizedPublishers(pageNo, pageSize, search);
+	}
+
+	public int countPublisher(String search) throws SQLException {
+		return new PublisherDAO().countPublishers(search);
+	}
 }

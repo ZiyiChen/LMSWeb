@@ -1,7 +1,7 @@
 /**
  * TODO add current page check;
  */
-var pageSize = 12;
+var pageSize = 13;
 var loadCreateOnce = false;
 var loadEditOnce = false;
 var currentPage = 1;

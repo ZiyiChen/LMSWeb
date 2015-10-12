@@ -25,7 +25,7 @@ import com.jdbc.lmsys.AdministratorManagementSys;
 @WebServlet({
 	"/listAuthors","/listAuthorsPage","/addAuthor","/deleteAuthor","/updateAuthor","/countAuthor","/getAuthorById",
 	"/listBooks","/listBooksPage","/addBook","/deleteBook","/updateBook","/getBookById","/countBook",
-	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
+	"/listPublishers","/listPublishersPage","/addPublisher","/deletePublisher","/updatePublisher","/getPublisherById","/countPublisher",
 	"/listGenres"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -155,13 +155,12 @@ public class AdminServlet extends HttpServlet {
 			publisher.setPublisherName(publisherName);
 			publisher.setAddress(publisherAddress);
 			publisher.setPhone(publisherPhone);
-			
 			try {
 				new AdministratorManagementSys().insertPublisher(publisher);
-				message = "Publisher add succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Publisher add failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
@@ -177,10 +176,10 @@ public class AdminServlet extends HttpServlet {
 			publisher.setPublisherId(publisherId);
 			try {
 				new AdministratorManagementSys().updatePublisher(publisher);
-				message = "Publisher update succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Publisher update failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
@@ -194,6 +193,7 @@ public class AdminServlet extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Publisher delete failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
@@ -203,6 +203,33 @@ public class AdminServlet extends HttpServlet {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.writeValue(response.getOutputStream(), pbs);
 			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Publishers failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/listPublishersPage": {
+			try {
+				int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+				int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+				String search = request.getParameter("searchText");
+				List<Publisher> pbs = new AdministratorManagementSys().searchPublishers(pageNo, pageSize, search);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), pbs);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Publishers failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/countPublisher": {
+			try {
+				String search = request.getParameter("searchText");
+				int count = new AdministratorManagementSys().countPublisher(search);
+				response.getWriter().write("" + count);
+			} catch (Exception e) {
 				e.printStackTrace();
 				message = "List Publishers failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);

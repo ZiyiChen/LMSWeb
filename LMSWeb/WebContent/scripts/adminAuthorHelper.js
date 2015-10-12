@@ -1,4 +1,4 @@
-var pageSize = 14;
+var pageSize = 13;
 var loadCreateOnce = false;
 var loadEditOnce = false;
 var currentPage = 1;

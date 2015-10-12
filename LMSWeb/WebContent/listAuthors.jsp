@@ -79,7 +79,7 @@
 				</div>
 				<div class="modal-body">
 					<form name="addAuthorForm" action="addAuthor" method="post">
-						New Author Title: <input type="text" name="name" class="form-control" id="crtAuName"/> 
+						New Author Name: <input type="text" name="name" class="form-control" id="crtAuName"/> 
 					</form>
 				</div>
 				<div class="modal-footer">

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jdbc.lmdo.Author;
 import com.jdbc.lmdo.Publisher;
 
 public class PublisherDAO extends BaseDAO{
@@ -58,6 +59,18 @@ public class PublisherDAO extends BaseDAO{
 			pubs.add(pub);
 		}
 		return pubs;
+	}
+
+	public List<Publisher> searchSizedPublishers(int pageNo, int pageSize,
+			String search) throws SQLException {
+		search = '%' + search + '%';
+		return (List<Publisher>) read (setPageLimits(pageNo, pageSize, "select * from tbl_publisher where publisherName like ?"),
+				new Object[] {search});
+	}
+
+	public int countPublishers(String search) throws SQLException {
+		search = '%' + search + '%';
+		return count ("select count(*) from tbl_publisher where publisherName like ?", search);
 	}
 	
 	
