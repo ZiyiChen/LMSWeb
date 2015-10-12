@@ -13,7 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="./Bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./Bootstrap/bootstrap-select.min.css">
+    
     <!-- Custom styles for this template -->
     <link href="./Bootstrap/dashboard.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="./CSS/lms.css">
@@ -45,10 +45,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://getbootstrap.com/examples/dashboard/#">Dashboard</a></li>
-            <li><a href="http://getbootstrap.com/examples/dashboard/#">Settings</a></li>
-            <li><a href="http://getbootstrap.com/examples/dashboard/#">Profile</a></li>
-            <li><a href="http://getbootstrap.com/examples/dashboard/#">Help</a></li>
+            <li><a href="index.jsp">Dashboard</a></li>
+            <li><a href="index.jsp">Settings</a></li>
+            <li><a href="index.jsp">Profile</a></li>
+            <li><a href="index.jsp">Help</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -117,9 +117,7 @@
     <script src="./Bootstrap/jquery.min.js"></script>
     <script src="./Bootstrap/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./Bootstrap/holder.min.js"></script>
+    <!-- <script src="./Bootstrap/holder.min.js"></script> -->
     <script src="./Bootstrap/ie10-viewport-bug-workaround.js"></script>
     <script src="./scripts/handlebars-v4.0.2.js"></script>
-    <script src="./scripts/bootstrap-notify.min.js"></script>
-    <script type="text/javascript" src="./Bootstrap/bootstrap-select.min.js"></script>
     </body>

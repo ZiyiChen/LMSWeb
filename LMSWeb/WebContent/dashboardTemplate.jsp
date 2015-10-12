@@ -10,7 +10,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="listBooks.jsp"><b>Book</b></a></li>
-            <li><a href="listAuthors.jsp">Author</a></li>
+            <li><a href="listAuthors.jsp"><b>Author</b></a></li>
             <li><a href="listPublishers.jsp">Publisher</a></li>
             <li><a href="listBookLoans.jsp">Book Loan</a></li>
           </ul>

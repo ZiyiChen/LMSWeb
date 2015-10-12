@@ -219,7 +219,26 @@ public class AdministratorManagementSys {
 		return bks;
 	}
 	
+	public List<Book> getSizedFullLoadBooks() throws SQLException {
+		List<Book> bks = new BookDAO().readAll();
+		AuthorDAO auDAO = new AuthorDAO();
+		GenreDAO genDAO = new GenreDAO();
+		for (Book bk : bks) {
+			bk.setAuthors(auDAO.readAllByBook(bk));
+			bk.setGenres(genDAO.readAllByBook(bk));
+		}
+		return bks;
+	}
+	
 	public int countBook (String searchText) throws SQLException {
 		return new BookDAO().countBooks(searchText);
+	}
+	
+	public List<Author> searchAuthors(int pageNo, int pageSize, String search) throws SQLException {
+		AuthorDAO authDAO = new AuthorDAO();
+		return authDAO.searchSizedAuthors(pageNo, pageSize, search);
+	}
+	public int countAuthor(String search) throws SQLException {
+		return new AuthorDAO().countAuthors(search);
 	}
 }

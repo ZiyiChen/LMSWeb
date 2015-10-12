@@ -22,12 +22,10 @@ import com.jdbc.lmsys.AdministratorManagementSys;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({"/listAuthors","/addAuthor","/deleteAuthor","/updateAuthor",
-	"/listBooks","/addBook","/deleteBook","/updateBook","/getBookById","/countBook",
+@WebServlet({
+	"/listAuthors","/listAuthorsPage","/addAuthor","/deleteAuthor","/updateAuthor","/countAuthor","/getAuthorById",
+	"/listBooks","/listBooksPage","/addBook","/deleteBook","/updateBook","/getBookById","/countBook",
 	"/listPublishers","/addPublisher","/deletePublisher","/updatePublisher",
-	"/listBranchs","/addBranch","/deleteBranch","/updateBranch",
-	"/listBorrowers","/addBorower","/deleteBorower","/updateBorower",
-	"/listLoans","/updateLoan",
 	"/listGenres"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -60,29 +58,28 @@ public class AdminServlet extends HttpServlet {
 			String authorName = request.getParameter("authorName");
 			Author author = new Author();
 			author.setAuthorName(authorName);
-
 			try {
 				new AdministratorManagementSys().insertAuthor(author);
-				message = "Author add succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = null;
 				message = "Author add failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
 		case "/updateAuthor": {
 			String authorName = request.getParameter("authorName");
 			int authorId = Integer.parseInt(request.getParameter("authorId"));
+			
 			Author author = new Author();
 			author.setAuthorName(authorName);
 			author.setAuthorId(authorId);
 			try {
 				new AdministratorManagementSys().updateAuthor(author);
-				message = "Author update succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Author update failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
@@ -92,10 +89,10 @@ public class AdminServlet extends HttpServlet {
 			author.setAuthorId(authorId);
 			try {
 				new AdministratorManagementSys().deleteAuthor(author);
-				message = "Author delete succesfully";
 			} catch (Exception e) {
 				e.printStackTrace();
 				message = "Author delete failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
 			}
 			break;
 		}
@@ -105,6 +102,33 @@ public class AdminServlet extends HttpServlet {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.writeValue(response.getOutputStream(), aus);
 			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Authors failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/listAuthorsPage": {
+			try {
+				int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+				int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+				String search = request.getParameter("searchText");
+				List<Author> aus = new AdministratorManagementSys().searchAuthors(pageNo, pageSize, search);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), aus);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Authors failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/countAuthor": {
+			try {
+				String search = request.getParameter("searchText");
+				int count = new AdministratorManagementSys().countAuthor(search);
+				response.getWriter().write("" + count);
+			} catch (Exception e) {
 				e.printStackTrace();
 				message = "List Authors failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
@@ -281,6 +305,18 @@ public class AdminServlet extends HttpServlet {
 		}
 		case "/listBooks": {
 			try {
+				List<Book> bks = new AdministratorManagementSys().getSizedFullLoadBooks();
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), bks);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List Books failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/listBooksPage": {
+			try {
 				int pageNo = Integer.parseInt(request.getParameter("pageNo"));
 				int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 				String search = request.getParameter("searchText");
@@ -289,7 +325,7 @@ public class AdminServlet extends HttpServlet {
 				mapper.writeValue(response.getOutputStream(), bks);
 			}catch (Exception e) {
 				e.printStackTrace();
-				message = "List books failed. Reason: " + e.getMessage();
+				message = "List Books failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;

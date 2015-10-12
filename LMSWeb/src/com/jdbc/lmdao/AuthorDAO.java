@@ -54,6 +54,17 @@ public class AuthorDAO extends BaseDAO {
 				new Object[] { bk.getBookId() });
 	}
 
+	public List<Author> searchSizedAuthors(int pageNo, int pageSize, String search) throws SQLException {
+		search = '%' + search + '%';
+		return (List<Author>) read (setPageLimits(pageNo, pageSize, "select * from tbl_author where authorName like ?"),
+				new Object[] {search});
+	}
+	
+	public int countAuthors(String searchText) throws SQLException {
+		searchText = '%' + searchText + '%';
+		return count ("select count(*) from tbl_author where authorName like ?", searchText);
+	}
+	
 	@Override
 	protected List<Author> convertResult(ResultSet rs) throws SQLException {
 		List<Author> authors = new ArrayList<Author>();

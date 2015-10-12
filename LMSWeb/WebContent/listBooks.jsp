@@ -13,12 +13,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="./scripts/adminHelper.js"></script>
-<script>
-		$(function(){listBooks($('#searchText').val(), 1, pageSize);});
-		$('.selectpicker').selectpicker();
-		pageSize = 14;
-</script>
+<link rel="stylesheet" type="text/css" href="./Bootstrap/bootstrap-select.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Book List</title>
 </head>
@@ -161,4 +156,7 @@
     </div>
     </div>
 </body>
+<script src="./scripts/adminBookHelper.js"></script>
+<script src="./scripts/bootstrap-notify.min.js"></script>
+<script src="./Bootstrap/bootstrap-select.min.js"></script>
 </html>

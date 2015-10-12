@@ -1,12 +1,20 @@
 /**
+ * TODO add current page check;
+ */
+var pageSize = 12;
+var loadCreateOnce = false;
+var loadEditOnce = false;
+var currentPage = 1;
+var entries = 0;
+/**
+ * functions for Book
  * 
  */
-var pageSize = 10;
 
 function listBooks(searchText, pageNo, pageSize) {
 	$.ajax({
 		method:"POST",
-		url:"listBooks",
+		url:"listBooksPage",
 		data:{
 			searchText: searchText,
 			pageNo: pageNo,
@@ -17,9 +25,12 @@ function listBooks(searchText, pageNo, pageSize) {
 		var source = $("#bookEntryTemplate").html();
 		var template = Handlebars.compile(source);
 		data = $.parseJSON(data);
+		entries = 0;
+		currentPage = pageNo;
 		$.each(data, function(id, item){
 			var html = template (item);
 			dataString += html;
+			entries++;
 		});
 		$("#bookTbody").html(dataString);
 	});
@@ -36,11 +47,10 @@ function listBooks(searchText, pageNo, pageSize) {
 			var cass = "";
 			if (i == pageNo)
 				cass = "active";
-			var pg = {pageNo : i, pageSize : pageSize, cass : cass};
+			var pg = {pageNo : i, pageSize : pageSize, cass : cass, method : 'listBooks'};
 			var html = template(pg);
 			dataString += html;
 		}
-		$("#pages").html("");
 		$("#pages").html(dataString);
 	});
 }
@@ -51,14 +61,14 @@ function addBook () {
 		  url: "addBook",
 		  data: { bookTitle: $("#crtBkTitle").val(),
 			  bookPublisher: $("#crtBkPubSel").val(),
-			  addedAuthors: $("#crtBkAuthSel").val(),
+			  addedAuthors: $("#crtBkBkthSel").val(),
 			  addedGenres: $("#crtBkGenSel").val()}
 	}).done(function(msg) {
 		if (!msg) 
 			showSuccess("Add Book Success");
 		else
 			showWarning(msg);
-		listBooks($('#searchText').val(), 1, pageSize);
+		listBooks($('#searchText').val(), currentPage, pageSize);
 	});
 }
 
@@ -69,18 +79,17 @@ function updateBook () {
 		  data: {bookId: $("#edBkId").val(),
 			  bookTitle: $("#edBkTitle").val(),
 			  bookPublisher: $("#edBkPubSel").val(),
-			  updatedAuthors: $("#edBkAuthSel").val(),
+			  updatedAuthors: $("#edBkBkthSel").val(),
 			  updatedGenres: $("#edBkGenSel").val()}
 	}).done(function( msg ) {
 		if (!msg) 
 			showSuccess("Update Book Success");
 		else
 			showWarning(msg);
-		listBooks($('#searchText').val(), 1, pageSize);
+		listBooks($('#searchText').val(), currentPage, pageSize);
 	});
 }
 
-var loadCreateOnce = false;
 function createBookModal() {
 	if(!loadCreateOnce) {
 		getValidPublisher($('#crtBkPubSel'));
@@ -155,15 +164,17 @@ function destoryBook() {
 			showSuccess("Delete Book Success");
 		else
 			showWarning(msg);
-		listBooks($('#searchText').val(), 1, pageSize);
+		if(--entries < 1)
+			currentPage = currentPage > 1 ? currentPage - 1 : 1;
+		
+		listBooks($('#searchText').val(), currentPage, pageSize);
 	});
 }
 
-var loadEditOnce = false;
 function editBook(id) {
 	if (!loadEditOnce){
 		getValidPublisher($('#edBkPubSel'));
-		getValidAuthor($('#edBkAuthSel'));
+		getValidAuthor($('#edBkBkthSel'));
 		getValidGenre($('#edBkGenSel'));
 		loadEditOnce = true;
 	}
@@ -195,16 +206,16 @@ function selectBookProperty (bkId) {
 			$("#edBkGenSel").selectpicker('refresh');
 		}
 		if (bk.authors) {
-			var addedAus = [];
+			var addedBks = [];
 			$.each(bk.authors, function(index, item) {
-				addedAus.push(item.authorId);
+				addedBks.push(item.authorId);
 			});
-			$("#edBkAuthSel option").each(function(){
-				if($.inArray(parseInt($(this).val(),10), addedAus) > -1){
+			$("#edBkBkthSel option").each(function(){
+				if($.inArray(parseInt($(this).val(),10), addedBks) > -1){
 					$(this).attr('selected', 'selected');
 				}
 			});
-			$("#edBkAuthSel").selectpicker('refresh');
+			$("#edBkBkthSel").selectpicker('refresh');
 		}
 		if (bk.publisher) {
 			var addedPub = bk.publisher;
@@ -218,9 +229,14 @@ function selectBookProperty (bkId) {
 	});
 }
 
+/**
+ * functions run when page loaded
+ */
+
 $(function(){
 	$('#createBookModal').on('hidden.bs.modal', function () {
 		$(this).find("input,textarea,select").val('');
 		$('.selectpicker').selectpicker('refresh');
 	});
+	listBooks($('#searchText').val(), 1, pageSize);
 });
