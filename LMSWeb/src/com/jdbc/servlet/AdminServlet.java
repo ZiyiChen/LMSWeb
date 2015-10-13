@@ -1,11 +1,12 @@
 package com.jdbc.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,9 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdbc.lmdo.Author;
 import com.jdbc.lmdo.Book;
+import com.jdbc.lmdo.BookLoans;
+import com.jdbc.lmdo.Borrower;
+import com.jdbc.lmdo.Branch;
 import com.jdbc.lmdo.Genre;
 import com.jdbc.lmdo.Publisher;
 import com.jdbc.lmsys.AdministratorManagementSys;
+import com.sun.glass.ui.Pixels.Format;
 
 /**
  * Servlet implementation class AdminServlet
@@ -26,7 +31,8 @@ import com.jdbc.lmsys.AdministratorManagementSys;
 	"/listAuthors","/listAuthorsPage","/addAuthor","/deleteAuthor","/updateAuthor","/countAuthor","/getAuthorById",
 	"/listBooks","/listBooksPage","/addBook","/deleteBook","/updateBook","/getBookById","/countBook",
 	"/listPublishers","/listPublishersPage","/addPublisher","/deletePublisher","/updatePublisher","/getPublisherById","/countPublisher",
-	"/listGenres"})
+	"/listGenres",
+	"/listBookLoansPage","/countBookLoan","/updateBookLoan"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -130,7 +136,7 @@ public class AdminServlet extends HttpServlet {
 				response.getWriter().write("" + count);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "List Authors failed. Reason: " + e.getMessage();
+				message = "Count Authors failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;
@@ -231,7 +237,7 @@ public class AdminServlet extends HttpServlet {
 				response.getWriter().write("" + count);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "List Publishers failed. Reason: " + e.getMessage();
+				message = "Count Publishers failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;
@@ -365,7 +371,7 @@ public class AdminServlet extends HttpServlet {
 				response.getWriter().write("" + count);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "List books failed. Reason: " + e.getMessage();
+				message = "Count books failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;
@@ -378,6 +384,58 @@ public class AdminServlet extends HttpServlet {
 			}catch (Exception e) {
 				e.printStackTrace();
 				message = "Get book by id failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/listBookLoansPage": {
+			try {
+				int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+				int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+				List<BookLoans> bls = new AdministratorManagementSys().pageBookLoans(pageNo, pageSize);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.writeValue(response.getOutputStream(), bls);
+			}catch (Exception e) {
+				e.printStackTrace();
+				message = "List BookLoans failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/countBookLoan": {
+			try {
+				int count = new AdministratorManagementSys().countBookLoans();
+				response.getWriter().write("" + count);
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = "Count BookLoans failed. Reason: " + e.getMessage();
+				response.getWriter().write(message);
+			}
+			break;
+		}
+		case "/updateBookLoan": {
+			try {
+				int bookId = Integer.parseInt(request.getParameter("bookId"));
+				int cardNo = Integer.parseInt(request.getParameter("cardNo"));
+				int branchId = Integer.parseInt(request.getParameter("branchId"));
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String s = request.getParameter("dueDate");
+				Date dueDate = df.parse(request.getParameter("dueDate"));
+				Book bk = new Book();
+				bk.setBookId(bookId);
+				Branch bh = new Branch();
+				bh.setBranchId(branchId);
+				Borrower br = new Borrower();
+				br.setCardNo(cardNo);
+				BookLoans bl = new BookLoans();
+				bl.setBook(bk);
+				bl.setBorrower(br);
+				bl.setBranch(bh);
+				bl.setDueDate(dueDate);
+				new AdministratorManagementSys().overrideDueDate(bl);
+			} catch (Exception e) {
+				e.printStackTrace();
+				message = "Override due date failed. Reason: " + e.getMessage();
 				response.getWriter().write(message);
 			}
 			break;

@@ -251,4 +251,17 @@ public class AdministratorManagementSys {
 	public int countPublisher(String search) throws SQLException {
 		return new PublisherDAO().countPublishers(search);
 	}
+
+	public List<BookLoans> pageBookLoans(int pageNo, int pageSize) throws SQLException {
+		BookLoansDAO blDAO = new BookLoansDAO();
+		return blDAO.sizedBookLoans(pageNo, pageSize);
+	}
+
+	public int countBookLoans() throws SQLException {
+		return new BookLoansDAO().countBookLoans();
+	}
+
+	public void overrideDueDate(BookLoans bl) throws SQLException {
+		new BookLoansDAO().overrideDueDate(bl);
+	}
 }

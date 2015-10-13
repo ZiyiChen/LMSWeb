@@ -12,7 +12,7 @@
             <li><a href="listBooks.jsp"><b>Book</b></a></li>
             <li><a href="listAuthors.jsp"><b>Author</b></a></li>
             <li><a href="listPublishers.jsp"><b>Publisher</b></a></li>
-            <li><a href="listBookLoans.jsp">Book Loan</a></li>
+            <li><a href="listBookLoans.jsp"><b>Book Loans</b></a></li>
           </ul>
         </div>
         

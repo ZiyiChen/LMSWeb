@@ -84,6 +84,20 @@ public class BookLoansDAO extends BaseDAO{
 		}
 		return bls;
 	}
+
+	public List<BookLoans> sizedBookLoans(int pageNo, int pageSize) throws SQLException {
+		return (List<BookLoans>) read (setPageLimits(pageNo, pageSize, "select * from tbl_book_loans"),
+				null);
+	}
+
+	public int countBookLoans() throws SQLException {
+		return count ("select count(*) from tbl_book_loans", null);
+	}
+
+	public void overrideDueDate(BookLoans bl) throws SQLException {
+		save("update tbl_book_loans set dueDate = ? where bookId = ? and branchId = ? and cardNo = ?",
+				new Object[]{bl.getDueDate(), bl.getBook().getBookId(), bl.getBranch().getBranchId(), bl.getBorrower().getCardNo()});
+	} 
 	
 	
 }

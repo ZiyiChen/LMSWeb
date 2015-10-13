@@ -106,7 +106,8 @@ public abstract class BaseDAO {
 	protected int count (String query, String searchText) throws SQLException {
 		Connection conn = getConnection();
 		PreparedStatement stmt = conn.prepareStatement(query);
-		stmt.setString(1, searchText);
+		if (searchText != null)
+			stmt.setString(1, searchText);
 		ResultSet rs = stmt.executeQuery();
 		int result = 0;
 		if (rs.next()) {
