@@ -61,7 +61,7 @@ function addBook () {
 		  url: "addBook",
 		  data: { bookTitle: $("#crtBkTitle").val(),
 			  bookPublisher: $("#crtBkPubSel").val(),
-			  addedAuthors: $("#crtBkBkthSel").val(),
+			  addedAuthors: $("#crtBkAuthSel").val(),
 			  addedGenres: $("#crtBkGenSel").val()}
 	}).done(function(msg) {
 		if (!msg) 
@@ -79,7 +79,7 @@ function updateBook () {
 		  data: {bookId: $("#edBkId").val(),
 			  bookTitle: $("#edBkTitle").val(),
 			  bookPublisher: $("#edBkPubSel").val(),
-			  updatedAuthors: $("#edBkBkthSel").val(),
+			  updatedAuthors: $("#edBkAuthSel").val(),
 			  updatedGenres: $("#edBkGenSel").val()}
 	}).done(function( msg ) {
 		if (!msg) 
@@ -174,7 +174,7 @@ function destoryBook() {
 function editBook(id) {
 	if (!loadEditOnce){
 		getValidPublisher($('#edBkPubSel'));
-		getValidAuthor($('#edBkBkthSel'));
+		getValidAuthor($('#edBkAuthSel'));
 		getValidGenre($('#edBkGenSel'));
 		loadEditOnce = true;
 	}
@@ -210,12 +210,12 @@ function selectBookProperty (bkId) {
 			$.each(bk.authors, function(index, item) {
 				addedBks.push(item.authorId);
 			});
-			$("#edBkBkthSel option").each(function(){
+			$("#edBkAuthSel option").each(function(){
 				if($.inArray(parseInt($(this).val(),10), addedBks) > -1){
 					$(this).attr('selected', 'selected');
 				}
 			});
-			$("#edBkBkthSel").selectpicker('refresh');
+			$("#edBkAuthSel").selectpicker('refresh');
 		}
 		if (bk.publisher) {
 			var addedPub = bk.publisher;

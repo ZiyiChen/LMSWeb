@@ -252,7 +252,9 @@ public class AdminServlet extends HttpServlet {
 				
 				int pubId = Integer.parseInt(request.getParameter("bookPublisher"));
 				if (pubId != -1) {
-					Publisher pub = amSys.getPublisherById(pubId);
+					Publisher pub = new Publisher();
+					pub.setPublisherId(pubId);
+//					Publisher pub = amSys.getPublisherById(pubId);
 					bk.setPublisher(pub);
 				}
 				
@@ -260,7 +262,10 @@ public class AdminServlet extends HttpServlet {
 				if (authStrs != null) {
 					List<Author> auths = new ArrayList<Author>();
 					for(String s : authStrs) {
-						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+						Author auth = new Author();
+						auth.setAuthorId(Integer.parseInt(s));
+//						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+						auths.add(auth);
 					}
 					bk.setAuthors(auths);
 				}
@@ -269,7 +274,10 @@ public class AdminServlet extends HttpServlet {
 				if (genreStrs != null) {
 					List<Genre> genres = new ArrayList<Genre>();
 					for(String s : genreStrs) {
-						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+						Genre gen = new Genre();
+						gen.setGenreId(Integer.parseInt(s));
+//						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+						genres.add(gen);
 					}
 					bk.setGenres(genres);
 				}
@@ -294,8 +302,9 @@ public class AdminServlet extends HttpServlet {
 				
 				int pubId = Integer.parseInt(request.getParameter("bookPublisher"));
 				if (pubId != -1) {
-					//TODO make update book create new obj with ID
-					Publisher pub = amSys.getPublisherById(pubId);
+					Publisher pub = new Publisher();
+					pub.setPublisherId(pubId);
+//					Publisher pub = amSys.getPublisherById(pubId);
 					bk.setPublisher(pub);
 				}
 				
@@ -303,7 +312,10 @@ public class AdminServlet extends HttpServlet {
 				if (authStrs != null) {
 					List<Author> auths = new ArrayList<Author>();
 					for(String s : authStrs) {
-						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+						Author auth = new Author();
+						auth.setAuthorId(Integer.parseInt(s));
+//						auths.add(amSys.getAuthorById(Integer.parseInt(s)));
+						auths.add(auth);
 					}
 					bk.setAuthors(auths);
 				}
@@ -312,7 +324,10 @@ public class AdminServlet extends HttpServlet {
 				if (genreStrs != null) {
 					List<Genre> genres = new ArrayList<Genre>();
 					for(String s : genreStrs) {
-						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+						Genre gen = new Genre();
+						gen.setGenreId(Integer.parseInt(s));
+//						genres.add(amSys.getGenreById(Integer.parseInt(s)));
+						genres.add(gen);
 					}
 					bk.setGenres(genres);
 				}
@@ -419,7 +434,6 @@ public class AdminServlet extends HttpServlet {
 				int cardNo = Integer.parseInt(request.getParameter("cardNo"));
 				int branchId = Integer.parseInt(request.getParameter("branchId"));
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				String s = request.getParameter("dueDate");
 				Date dueDate = df.parse(request.getParameter("dueDate"));
 				Book bk = new Book();
 				bk.setBookId(bookId);
